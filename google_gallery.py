@@ -39,8 +39,8 @@ def OAuth2Login(client_secrets, credential_store, email):
     return gd_client
  
 if __name__ == '__main__':
-    email = 'azurexsealx1015@gmail.com'
-    confDir = os.path.expanduser('/Users/RyosukeUmeki/Desktop/google_gallery/') 
+    email = 'email'
+    confDir = os.path.expanduser('path') 
     client_secrets = os.path.join(confDir, 'google_gallery.json') 
     credential_store = os.path.join(confDir, 'credentials.dat') 
     gd_client = OAuth2Login(client_secrets, credential_store, email)
