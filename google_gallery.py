@@ -1,5 +1,6 @@
 #!/usr/bin/python
  
+# module ----  
 import os
 import webbrowser
 from datetime import datetime, timedelta
@@ -12,8 +13,10 @@ import httplib2
 import json
 import urllib2
  
+# global variables ----
 photo_arr = []
 
+# Google Authetication
 def OAuth2Login(client_secrets, credential_store, email):
     scope='https://picasaweb.google.com/data/'
     user_agent='picasawebuploader'
@@ -38,9 +41,11 @@ def OAuth2Login(client_secrets, credential_store, email):
                                                additional_headers={'Authorization' : 'Bearer %s' % credentials.access_token})
     return gd_client
  
+
+# main ----- 
 if __name__ == '__main__':
     email = 'email'
-    confDir = os.path.expanduser('path') 
+    confDir = os.path.abspath(os.path.dirname(__file__))
     client_secrets = os.path.join(confDir, 'google_gallery.json') 
     credential_store = os.path.join(confDir, 'credentials.dat') 
     gd_client = OAuth2Login(client_secrets, credential_store, email)
@@ -50,17 +55,9 @@ if __name__ == '__main__':
         print 'Album: %s (%s)' % (album.title.text, album.numphotos.text)
  
         photos = gd_client.GetFeed('/data/feed/api/user/default/albumid/%s?kind=photo' % (album.gphoto_id.text))
-        # entry_photos = photos.entry
-        # f = open(entry_photos[0].title.text, 'w')
-        # f.write(urllib2.urlopen(entry_photos[0].content.src).read())
-        # f.close
         for photo in photos.entry:
-            #f = open(photo.title.text, 'w')
-            #f.write(urllib2.urlopen(photo.content.src).read())
-            #f.close()
-            #photo_arr.append(urllib2.urlopen(photo.content.src).read())
             photo_arr.append(photo)
 
-f = open(photo_arr[0].title.text, 'w')
-f.write(urllib2.urlopen(photo_arr[0].content.src).read())
-f.close()
+    f = open(photo_arr[0].title.text, 'w')
+    f.write(urllib2.urlopen(photo_arr[0].content.src).read())
+    f.close()
