@@ -42,6 +42,9 @@ from PIL import Image
 import httplib2
 
 
+# コメントが英語で書かれていますが、ご了承ください。　
+
+# python 2.7には、enumがないので、そのかわり
 class MediaType (object):
     PHOTO = 0
     MOVIE = 1
@@ -73,7 +76,8 @@ class PhotoGalleryBot (Plugin):
             data: Data from Slack.
         """
         feedback_pattern = re.compile(
-            r'.*<@U3GAKNMHQ.*(Gallery).*', re.DOTALL | re.IGNORECASE
+            # ここには、slack users list apiに表示されるUから始まるbotのidを入れてください
+            r'.*<@UAAAAAA.*(Gallery).*', re.DOTALL | re.IGNORECASE
         )
 
         if not (re.match(feedback_pattern, data['text'])):
@@ -158,6 +162,7 @@ class PhotoGalleryBot (Plugin):
 
         return gd_client
 
+    # google photoで取得した写真のなかから、乱数を洗濯します。
     def get_random_number_in_array(self, arr):
         """Get the length of the list and decide a random number from 0 and the length.
         Args:
@@ -169,6 +174,7 @@ class PhotoGalleryBot (Plugin):
         max_length = len(arr)
         return random.randint(0, max_length)
 
+    # ここで、google photoから、全ての写真を取得します。
     def fetch_all_media(self):
         """ Fetch all media from the email and put it into MEDIA_ARR
         """
@@ -188,6 +194,7 @@ class PhotoGalleryBot (Plugin):
                 self.MEDIA_ARR.append(media)
 
     # 3 ------
+    # メディアの種類を選択します。
     def get_kind_of_media(self, media_object):
         """ Telling the type of the media from media_object
         Args:
@@ -203,6 +210,7 @@ class PhotoGalleryBot (Plugin):
         else:
             return MediaType.PHOTO
 
+    # メディアの種類が写真なら、写真をダウンロード
     def download_photo(self, media_object):
         """ Downloading the photo type media.
 
@@ -214,6 +222,7 @@ class PhotoGalleryBot (Plugin):
         f.write(urllib2.urlopen(media_object.content.src).read())
         f.close()
 
+    # メディアの種類が動画なら、動画をダウンロード
     def download_movie(self, media_object):
         """ Downloading the photo type media.
 
@@ -239,6 +248,7 @@ class PhotoGalleryBot (Plugin):
                         media_file.write(response.content)
                         media_file.close()
 
+    # cr2ファイルjpgに変換
     def cr2_to_jpg(self, photo_title, img_object):
         """Convert CR2 extension to jpg
 
@@ -255,6 +265,7 @@ class PhotoGalleryBot (Plugin):
 
         return photo_title, img_object
 
+    # 写真のサイズ変更
     def resize_photo(self, media_object):
         """Change the size of photo
 
@@ -309,6 +320,7 @@ class PhotoGalleryBot (Plugin):
         )
 
     # 5 -----
+    # ここで、写真投稿
     def post_random_media(self):
         """Post the random media already downloaded in the server onto Slack.
         Depending on the media, the title of message get changed.
@@ -355,6 +367,7 @@ class PhotoGalleryBot (Plugin):
         )
 
     # 7 ------
+    # サーバーから写真削除
     def delete_random_media(self):
         """ Deleting a media file in the server.
         """
