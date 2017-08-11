@@ -13,8 +13,6 @@ import httplib2
 import json
 import urllib2
  
-# global variables ----
-photo_arr = []
 
 # Google Authetication
 def OAuth2Login(client_secrets, credential_store, email):
@@ -57,9 +55,8 @@ if __name__ == '__main__':
         photos = gd_client.GetFeed('/data/feed/api/user/default/albumid/%s?kind=photo' % (album.gphoto_id.text))
         for photo in photos.entry:
             print(photo.title.text)
-            photo_arr.append(photo)
-
+            f = open(photo.title.text, 'w')
+            f.write(urllib2.urlopen(photo.content.src).read())
+            f.close()
     
-    f = open(photo_arr[0].title.text, 'w')
-    f.write(urllib2.urlopen(photo_arr[0].content.src).read())
-    f.close()
+   
