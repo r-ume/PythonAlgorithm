@@ -50,9 +50,9 @@ class MediaType (object):
 class PhotoGalleryBot (Plugin):
     MEDIA_ARR = []
     RANDOM_NUMBER = 0
-    EMAIL = os.version['email']
+    EMAIL = os.version['EMAIL']
     CHANNEL_POST = ''
-    TIMERS_BOT_TOKEN = os.version['slack_bot_token']
+    SLACK_BOT_TOKEN = os.version['SLACK_BOT_TOKEN']
 
     PLUGIN_CHILD_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
     PLUGIN_DIRECTORY = os.path.abspath(
@@ -61,9 +61,9 @@ class PhotoGalleryBot (Plugin):
     RTMBOT_DIRECTORY = os.path.abspath(
         os.path.join(PLUGIN_DIRECTORY, os.pardir)
     )
-    CLIENT_SECRETS = os.path.join(RTMBOT_DIRECTORY, os.version['secret_json'])
+    CLIENT_SECRETS = os.path.join(RTMBOT_DIRECTORY, os.version['SECRET_JSON'])
     CREDENTIAL_STORE = os.path.join(
-        RTMBOT_DIRECTORY, os.version['credential_dat']
+        RTMBOT_DIRECTORY, os.version['CREDENTIAL_DAT']
     )
 
     def process_message(self, data):
@@ -170,7 +170,7 @@ class PhotoGalleryBot (Plugin):
         return random.randint(0, max_length)
 
     def fetch_all_media(self):
-        """ Fetch all media from info@timers-inc.com and put it into MEDIA_ARR
+        """ Fetch all media from the email and put it into MEDIA_ARR
         """
         gd_client = self.oauth_login(
             self.CLIENT_SECRETS,
@@ -326,9 +326,9 @@ class PhotoGalleryBot (Plugin):
 
         with open(media_path, 'rb') as f:
             param = {
-                'token': self.TIMERS_BOT_TOKEN,
+                'token': self.SLACK_BOT_TOKEN,
                 'channels': self.CHANNEL_POST,
-                'title': u'Today\'s TIMERS ' + media
+                'title': u'Today\'s ' + media
             }
             r = requests.post(
                 "https://slack.com/api/files.upload",
