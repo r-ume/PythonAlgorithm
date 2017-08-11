@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
  
 # module ----  
 import os
@@ -44,9 +44,9 @@ def OAuth2Login(client_secrets, credential_store, email):
 
 # main ----- 
 if __name__ == '__main__':
-    email = 'email'
+    email = os.environ['EMAIL']
     confDir = os.path.abspath(os.path.dirname(__file__))
-    client_secrets = os.path.join(confDir, 'google_gallery.json') 
+    client_secrets = os.path.join(confDir, 'photo-gallery.json') 
     credential_store = os.path.join(confDir, 'credentials.dat') 
     gd_client = OAuth2Login(client_secrets, credential_store, email)
  
@@ -56,8 +56,10 @@ if __name__ == '__main__':
  
         photos = gd_client.GetFeed('/data/feed/api/user/default/albumid/%s?kind=photo' % (album.gphoto_id.text))
         for photo in photos.entry:
+            print(photo.title.text)
             photo_arr.append(photo)
 
+    
     f = open(photo_arr[0].title.text, 'w')
     f.write(urllib2.urlopen(photo_arr[0].content.src).read())
     f.close()
