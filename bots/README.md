@@ -5,5 +5,5 @@ Bot repo for techcamp-waseda
 
 ```
 $ cd rtmbot
-$ nohup rtmbot >> ./techcampwaseda.log 2>&1 &
+$ nohup rtmbot >> ./log/rtmbot.log 2>&1 &
 ```
